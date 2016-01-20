@@ -2,24 +2,26 @@
 using System.Collections;
 using System.Collections.Generic;
 
-public class GunController : MonoBehaviour {
-	Rigidbody2D playerRb;
+public class Gun : MonoBehaviour {
+//	Rigidbody2D playerRb;
+	Player player;
+	AudioSource laserSound;
 	SpriteRenderer sr;
 //	LineRenderer lr;
-	Vector3 offset;
-	RaycastHit2D hit;
 	float barrelLength;
 	public float lightSpacing = .5f;
 	public GameObject laserLight;
 	public float laserForce;
 	List<GameObject> availableLaserLights;
 	float cooldown = 1f;
-	float remainingCooldown;
+	public float remainingCooldown;
 
 	// Use this for initialization
 	void Start () {
-		GameObject player = GameObject.FindGameObjectWithTag ("Player");
-		playerRb = player.GetComponent<Rigidbody2D> ();
+		GameObject playerObj = GameObject.FindGameObjectWithTag ("Player");
+		player = playerObj.GetComponent<Player> ();
+		laserSound = gameObject.GetComponent<AudioSource> ();
+//		playerRb = player.GetComponent<Rigidbody2D> ();
 		sr = GetComponent<SpriteRenderer> ();
 //		lr = GetComponent<LineRenderer> ();
 //		lr.SetVertexCount (2);
@@ -31,26 +33,27 @@ public class GunController : MonoBehaviour {
 
 	// Update is called once per frame
 	void Update () {
-		Vector2 mousePos = (Vector2) Camera.main.ScreenToWorldPoint (Input.mousePosition);
-		offset = transform.up * (barrelLength / 2);
-		hit = Physics2D.Raycast (transform.position + offset, mousePos - (Vector2) transform.position);
-		if (Input.GetMouseButtonDown (0) && remainingCooldown <= 0) {
-			FireLaser(hit, offset);
-		} else {
+//		else {
 //			lr.enabled = false;
-		}
+//		}
 		remainingCooldown -= Time.deltaTime;
 	}
 
-	public void FireLaser(RaycastHit2D hit, Vector3 offset) {
+	public RaycastHit2D FireLaser() {
+		Vector2 mousePos = (Vector2) Camera.main.ScreenToWorldPoint (Input.mousePosition);
+		Vector3 offset = transform.up * (barrelLength / 2);
+		RaycastHit2D hit = Physics2D.Raycast (transform.position + offset, mousePos - (Vector2) transform.position);
 //		lr.SetPosition (0, transform.position + offset);
 		if (hit.collider != null) {
 //			lr.SetPosition (1, hit.point);
 //			lr.enabled = true;
 			StartCoroutine (IlluminateLaser(transform.position + offset, hit.point, lightSpacing));
 			remainingCooldown = cooldown;
-			playerRb.AddForce(-transform.up * laserForce);
+
+			player.KnockBack(-transform.up * laserForce, transform.position);
+			laserSound.Play ();
 		}
+		return hit;
 	}
 
 	IEnumerator IlluminateLaser(Vector3 beg, Vector3 end, float spacing) {

@@ -5,6 +5,9 @@ TagManager:
   serializedVersion: 2
   tags:
   - LaserLight
+  - Gun
+  - EnemyDamageFlash
+  - Enemy
   layers:
   - Default
   - TransparentFX

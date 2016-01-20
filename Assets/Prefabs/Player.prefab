@@ -112,7 +112,7 @@ Transform:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 152420}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: -4.23999977, z: 0}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 4, y: 4, z: 1}
   m_Children:
   - {fileID: 415686}
@@ -227,6 +227,7 @@ MonoBehaviour:
   lightSpacing: .5
   laserLight: {fileID: 165900, guid: 52cf1807d61f049288de555d97a2c481, type: 2}
   laserForce: 1000
+  remainingCooldown: 0
 --- !u!114 &11471188
 MonoBehaviour:
   m_ObjectHideFlags: 1
@@ -238,6 +239,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 26a2c00bfd3b44770a997ee42731006a, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  startHealth: 4
+  damage: 1
   speed: 4
 --- !u!120 &12038504
 LineRenderer:
@@ -340,7 +343,15 @@ Prefab:
   serializedVersion: 2
   m_Modification:
     m_TransformParent: {fileID: 0}
-    m_Modifications: []
+    m_Modifications:
+    - target: {fileID: 0}
+      propertyPath: m_LocalPosition.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 0}
+      propertyPath: startHealth
+      value: 4
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 0}
   m_RootGameObject: {fileID: 152420}

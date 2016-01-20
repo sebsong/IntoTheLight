@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class LaserLightController : MonoBehaviour {
+public class LaserLight : MonoBehaviour {
 	Light pointLight;
 	float laserIntensity;
 	float fadeSpeed;
